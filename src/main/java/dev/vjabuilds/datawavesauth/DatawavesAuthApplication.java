@@ -1,0 +1,13 @@
+package dev.vjabuilds.datawavesauth;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DatawavesAuthApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DatawavesAuthApplication.class, args);
+	}
+
+}
