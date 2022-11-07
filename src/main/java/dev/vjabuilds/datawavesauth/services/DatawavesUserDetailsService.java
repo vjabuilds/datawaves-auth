@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Component
-public class JpaUserDetailsService implements UserDetailsService {
+public class DatawavesUserDetailsService implements UserDetailsService {
 
     public UserRepository userRepository;
     public PasswordEncoder passwordEncoder;
