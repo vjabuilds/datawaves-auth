@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +33,12 @@ public class AuthenticationController {
     {
         log.info("logging in user...");
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
-        } catch(BadCredentialsException e) {
+            var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
+            if(!auth.isAuthenticated())
+                throw new BadCredentialsException("The password could not be matched with the user");
+        } catch(AuthenticationException e) {
             log.severe("Failed to log in user!!!");
-            throw new Exception("The requested user has invalid credentials!");
+            throw new Exception("The requested user has invalid credentials!", e);
         }
 
         return new ResponseModel(
