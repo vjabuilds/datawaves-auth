@@ -30,7 +30,6 @@ public class DatawavesUser {
     @Column(unique = true)
     private String email;
     private String password;
-    private String role;
     private boolean enabled = true;
 
     @ManyToMany( cascade = {CascadeType.ALL})
