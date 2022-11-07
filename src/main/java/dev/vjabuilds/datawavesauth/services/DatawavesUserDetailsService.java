@@ -1,7 +1,6 @@
 package dev.vjabuilds.datawavesauth.services;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,11 +17,9 @@ import dev.vjabuilds.datawavesauth.models.DatawavesUser;
 import dev.vjabuilds.datawavesauth.models.Role;
 import dev.vjabuilds.datawavesauth.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 
 @AllArgsConstructor
 @Component
-@Log
 public class DatawavesUserDetailsService implements UserDetailsService {
 
     public UserRepository userRepository;
