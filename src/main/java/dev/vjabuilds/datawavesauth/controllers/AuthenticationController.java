@@ -4,12 +4,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.vjabuilds.datawavesauth.controllers.AuthenticationControllerModels.RegistrationModel;
 import dev.vjabuilds.datawavesauth.controllers.AuthenticationControllerModels.ResponseModel;
+import dev.vjabuilds.datawavesauth.controllers.AuthenticationControllerModels.VerificationRequestModel;
 import dev.vjabuilds.datawavesauth.controllers.AuthenticationControllerModels.LoginRequestModel;
 import dev.vjabuilds.datawavesauth.jwt.TokenManager;
 import dev.vjabuilds.datawavesauth.services.DatawavesUserDetailsService;
@@ -30,7 +32,7 @@ public class AuthenticationController {
     {
         log.info("logging in user...");
         try {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getEmail(), model.getPassword()));
         } catch(BadCredentialsException e) {
             log.severe("Failed to log in user!!!");
             throw new Exception("The requested user has invalid credentials!");
@@ -55,4 +57,21 @@ public class AuthenticationController {
         return ResponseEntity.ok("Registered the user successfully!");
     }
 
+    @PostMapping("/verify")
+    public ResponseEntity<String> verify(@RequestBody VerificationRequestModel model)
+    {
+        try {
+            var ud = this.userDetailsService.loadUserByUsername(this.tokenManager.getUSername(model.getToken()));
+            var result = this.tokenManager.validateJwtToken(model.getToken(), ud);
+            if(result)
+                return ResponseEntity.ok("Token OK");
+            else
+                return ResponseEntity.badRequest().body("The provided token was not matched to the user");
+        } catch (UsernameNotFoundException ex) {
+            return ResponseEntity.badRequest().body("The token describes a non-existent user ");
+        }
+        catch (Exception ex) {
+            return ResponseEntity.badRequest().body("The provided token was invalid");
+        }
+    }
 }

@@ -36,4 +36,9 @@ public class TokenManager implements Serializable {
         boolean expired = claims.getExpiration().before(new Date());
         return username.equals(userDetails.getUsername()) && !expired;
     }
+
+     public String getUSername(String token)
+     {
+        return Jwts.parser().setSigningKey(secret_salt).parseClaimsJws(token).getBody().getSubject();
+     }
 }
