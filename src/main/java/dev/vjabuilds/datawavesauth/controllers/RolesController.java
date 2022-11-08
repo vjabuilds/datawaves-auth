@@ -3,7 +3,7 @@ package dev.vjabuilds.datawavesauth.controllers;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +23,8 @@ public class RolesController {
     }
 
     @PostMapping("/create_role")
-    @Secured("admin")
-    private ResponseEntity<String> createRole(@RequestBody RoleCreationModel model)
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<String> createRole(@RequestBody RoleCreationModel model)
     {
         Role r = rolesService.createRole(model.name);
         log.info(model.name);
@@ -37,8 +37,8 @@ public class RolesController {
     }
 
     @PostMapping("/add_role")
-    @Secured("admin")
-    private ResponseEntity<String> addRole(@RequestBody AddRoleModel model)
+    @PreAuthorize("hasAuthority('admin')")
+    public ResponseEntity<String> addRole(@RequestBody AddRoleModel model)
     {
         rolesService.addRole(model.username, model.role_name);
         return ResponseEntity.ok("Added the role!");

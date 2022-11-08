@@ -1,7 +1,7 @@
 package dev.vjabuilds.datawavesauth.configs;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import dev.vjabuilds.datawavesauth.jwt.TokenManager;
+import dev.vjabuilds.datawavesauth.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -25,6 +26,7 @@ import lombok.extern.java.Log;
 public class JwtFilter extends OncePerRequestFilter {
 
     private TokenManager tokenManager;
+    private UserRepository userRepository;
 
     private static final String PREFIX = "Bearer ";
     @Override
@@ -40,8 +42,11 @@ public class JwtFilter extends OncePerRequestFilter {
             else
             {
                 log.info("User successfully logged in!");
+                var user = userRepository.findByEmail(tokenManager.getUsername(token));
+                var authorities = user.getRoles().stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
+                log.info("User has authorities " + authorities.toString());
                 SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(tokenManager.getUsername(token), token, List.of(new SimpleGrantedAuthority("ADMIN")))
+                    new UsernamePasswordAuthenticationToken(tokenManager.getUsername(token), token, authorities)
                 );
             }
         }
