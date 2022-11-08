@@ -2,7 +2,9 @@ package dev.vjabuilds.datawavesauth.jwt;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +16,10 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.java.Log;
 
 @Component
+@Log
 public class TokenManager {
     private static final long TTL = 24*60*60;
     @Value("${secret_salt}")
@@ -44,7 +48,11 @@ public class TokenManager {
         String username = claims.getSubject();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         boolean expired = claims.getExpiration().before(new Date());
-        return username.equals(userDetails.getUsername()) && !expired;
+
+        Set<String> roles = userDetails.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toSet());
+        Set<String> token_roles = ((List<String>)claims.get("roles")).stream().collect(Collectors.toSet());;
+
+        return username.equals(userDetails.getUsername()) && !expired && roles.equals(token_roles);
     }
 
      public String getUSername(String token)
