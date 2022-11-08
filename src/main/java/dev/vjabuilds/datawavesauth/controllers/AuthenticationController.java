@@ -64,8 +64,7 @@ public class AuthenticationController {
     public ResponseEntity<String> verify(@RequestBody VerificationRequestModel model)
     {
         try {
-            var ud = this.userDetailsService.loadUserByUsername(this.tokenManager.getUSername(model.getToken()));
-            var result = this.tokenManager.validateJwtToken(model.getToken(), ud);
+            var result = this.tokenManager.validateJwtToken(model.getToken());
             if(result)
                 return ResponseEntity.ok("Token OK");
             else
