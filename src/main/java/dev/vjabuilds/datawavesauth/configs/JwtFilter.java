@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
             {
                 log.info("User successfully logged in!");
                 SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(tokenManager.getUSername(token), token, List.of(new SimpleGrantedAuthority("ADMIN")))
+                    new UsernamePasswordAuthenticationToken(tokenManager.getUsername(token), token, List.of(new SimpleGrantedAuthority("ADMIN")))
                 );
             }
         }

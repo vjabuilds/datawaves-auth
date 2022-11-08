@@ -52,7 +52,7 @@ public class TokenManager {
         return username.equals(userDetails.getUsername()) && !expired && roles.equals(token_roles);
     }
 
-     public String getUSername(String token)
+     public String getUsername(String token)
      {
         return Jwts.parser().setSigningKey(secret_salt).parseClaimsJws(token).getBody().getSubject();
      }
