@@ -48,7 +48,7 @@ public class DatawavesUserDetailsService implements UserDetailsService {
             model.getEmail(),
             passwordEncoder.encode(model.getPassword()),
             true,
-            new ArrayList<Role>(List.of(new Role(null, "User", null)))
+            new ArrayList<Role>(List.of(new Role(null, "user", null)))
         );
         return userRepository.save(cu);
     }
