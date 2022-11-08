@@ -27,9 +27,9 @@ public class AdminAccountPopulator {
     @Autowired
     private UserRepository userRepository;
 
-    @Value("${admin.username}")
+    @Value("${admin.username:admin}")
     private String admin_username;
-    @Value("${admin.password}")
+    @Value("${admin.password:admin}")
     private String admin_password;
 
     @Bean

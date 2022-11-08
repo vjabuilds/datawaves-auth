@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.management.relation.RoleResult;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import dev.vjabuilds.datawavesauth.controllers.AuthenticationControllerModels.RegistrationModel;
 import dev.vjabuilds.datawavesauth.models.DatawavesUser;
 import dev.vjabuilds.datawavesauth.models.Role;
+import dev.vjabuilds.datawavesauth.repositories.RolesRepository;
 import dev.vjabuilds.datawavesauth.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
@@ -23,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class DatawavesUserDetailsService implements UserDetailsService {
 
     public UserRepository userRepository;
+    public RolesRepository rolesRepository;
     public PasswordEncoder passwordEncoder;
 
     @Override
@@ -41,6 +45,9 @@ public class DatawavesUserDetailsService implements UserDetailsService {
 
     public DatawavesUser registerNewUserAccount(RegistrationModel model)
     {   
+        Role userRole = rolesRepository.findByName("user");
+        if(userRole == null)
+            userRole = new Role(null, "user", List.of());
         DatawavesUser cu = new DatawavesUser(
             null,
             model.getName(),
@@ -48,7 +55,7 @@ public class DatawavesUserDetailsService implements UserDetailsService {
             model.getEmail(),
             passwordEncoder.encode(model.getPassword()),
             true,
-            new ArrayList<Role>(List.of(new Role(null, "user", null)))
+            new ArrayList<Role>(List.of(userRole))
         );
         return userRepository.save(cu);
     }
