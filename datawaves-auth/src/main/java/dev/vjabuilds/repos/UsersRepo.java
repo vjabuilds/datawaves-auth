@@ -21,6 +21,7 @@ import dev.vjabuilds.view_models.RegistrationModel;
 import io.smallrye.jwt.build.Jwt;
 import io.quarkus.redis.datasource.ReactiveRedisDataSource;
 import io.smallrye.mutiny.Uni;
+import lombok.Getter;
 
 @ApplicationScoped
 public class UsersRepo {
@@ -36,6 +37,14 @@ public class UsersRepo {
 
     @ConfigProperty(name = "datawaves.jwt.refresh-length")
     Long refreshLength;
+
+    @ConfigProperty(name = "datawaves.jwt.audience")
+    @Getter
+    String audience;
+
+    @ConfigProperty(name = "datawaves.jwt.issuer")
+    @Getter
+    String issuer;
 
     public Uni<Boolean> registerUser(RegistrationModel model)
     {
@@ -66,15 +75,15 @@ public class UsersRepo {
                 public DatawavesUser user = x;
             }).map(x -> {
                 if(x.valid){
-                    String auth = Jwt.issuer("https://vjabuilds.dev")
+                    String auth = Jwt.issuer(issuer)
                         .upn(x.user.getEmail())
                         .expiresIn(authLength)
                         .groups(
                             new HashSet<>(x.user.getRoles())
                         ).sign();
-                    String refresh = Jwt.issuer("https://vjabuilds.dev")
+                    String refresh = Jwt.issuer(issuer)
                         .upn(x.user.getEmail())
-                        .audience("https://vjabuilds.dev/refresh")
+                        .audience(audience)
                         .expiresIn(refreshLength)
                         .sign();
                     return new AuthRefreshToken(auth, refresh);
@@ -89,7 +98,7 @@ public class UsersRepo {
         return this.redisDataSource.hash(DatawavesUser.class)
             .hget(TABLE_NAME, username)
             .map(x -> {
-                String auth = Jwt.issuer("https://vjabuilds.dev")
+                String auth = Jwt.issuer(issuer)
                     .upn(x.getEmail())
                     .groups(
                         new HashSet<>(x.getRoles())

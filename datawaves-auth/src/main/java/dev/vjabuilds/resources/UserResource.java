@@ -13,6 +13,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import dev.vjabuilds.models.DatawavesUser;
@@ -82,7 +83,7 @@ public class UserResource {
             if(token.getAudience().size() != 1)
                 return createErrorWithMessage("Token must contain exactly 1 audience!");
 
-            if(!token.getAudience().toArray()[0].equals("https://vjabuilds.dev/refresh"))
+            if(!token.getAudience().toArray()[0].equals(usersRepo.getAudience()))
                 return createErrorWithMessage("Token audience not set to correct URL" + token.getAudience().toArray()[0]);
 
             return usersRepo.refresh(token).map(x -> Response.ok(x).build());
