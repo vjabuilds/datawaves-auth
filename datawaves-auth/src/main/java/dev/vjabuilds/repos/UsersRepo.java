@@ -1,4 +1,4 @@
-package com.vjabuilds.repos;
+package dev.vjabuilds.repos;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,10 +13,10 @@ import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import com.password4j.Password;
-import com.vjabuilds.models.DatawavesUser;
-import com.vjabuilds.view_models.AuthRefreshToken;
-import com.vjabuilds.view_models.LoginModel;
-import com.vjabuilds.view_models.RegistrationModel;
+import dev.vjabuilds.models.DatawavesUser;
+import dev.vjabuilds.view_models.AuthRefreshToken;
+import dev.vjabuilds.view_models.LoginModel;
+import dev.vjabuilds.view_models.RegistrationModel;
 
 import io.smallrye.jwt.build.Jwt;
 import io.quarkus.redis.datasource.ReactiveRedisDataSource;

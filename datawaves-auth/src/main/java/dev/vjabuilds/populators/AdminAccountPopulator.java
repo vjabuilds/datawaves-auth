@@ -1,4 +1,4 @@
-package com.vjabuilds.populators;
+package dev.vjabuilds.populators;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import com.vjabuilds.repos.RolesRepo;
-import com.vjabuilds.repos.UsersRepo;
-import com.vjabuilds.view_models.RegistrationModel;
+import dev.vjabuilds.repos.RolesRepo;
+import dev.vjabuilds.repos.UsersRepo;
+import dev.vjabuilds.view_models.RegistrationModel;
 
 import io.quarkus.runtime.StartupEvent;
 

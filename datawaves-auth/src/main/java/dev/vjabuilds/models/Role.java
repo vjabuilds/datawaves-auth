@@ -1,4 +1,4 @@
-package com.vjabuilds.models;
+package dev.vjabuilds.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

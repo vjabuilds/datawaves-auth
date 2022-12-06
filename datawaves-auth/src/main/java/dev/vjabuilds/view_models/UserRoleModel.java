@@ -1,4 +1,4 @@
-package com.vjabuilds.view_models;
+package dev.vjabuilds.view_models;
 
 public record UserRoleModel(String role_name, String username) {
     

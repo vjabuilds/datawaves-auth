@@ -1,4 +1,4 @@
-package com.vjabuilds.resources;
+package dev.vjabuilds.resources;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import javax.ws.rs.Path;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import com.vjabuilds.models.Role;
-import com.vjabuilds.repos.RolesRepo;
-import com.vjabuilds.view_models.CreateRoleModel;
-import com.vjabuilds.view_models.UserRoleModel;
+import dev.vjabuilds.models.Role;
+import dev.vjabuilds.repos.RolesRepo;
+import dev.vjabuilds.view_models.CreateRoleModel;
+import dev.vjabuilds.view_models.UserRoleModel;
 
 import io.smallrye.mutiny.Uni;
 import lombok.AllArgsConstructor;

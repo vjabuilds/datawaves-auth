@@ -1,4 +1,4 @@
-package com.vjabuilds.resources;
+package dev.vjabuilds.resources;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import com.vjabuilds.models.DatawavesUser;
-import com.vjabuilds.repos.UsersRepo;
-import com.vjabuilds.view_models.LoginModel;
-import com.vjabuilds.view_models.RegistrationModel;
+import dev.vjabuilds.models.DatawavesUser;
+import dev.vjabuilds.repos.UsersRepo;
+import dev.vjabuilds.view_models.LoginModel;
+import dev.vjabuilds.view_models.RegistrationModel;
 
 import io.smallrye.jwt.auth.principal.JWTAuthContextInfo;
 import io.smallrye.jwt.auth.principal.JWTParser;
@@ -85,4 +85,9 @@ public class UserResource {
             return Uni.createFrom().item(Response.status(400).build());
         }
     }
+
+    // private Uni<Response> createErrorWithMessage(String msg)
+    // {
+    //     return Uni.createFrom().item(Response.);
+    // }
 }

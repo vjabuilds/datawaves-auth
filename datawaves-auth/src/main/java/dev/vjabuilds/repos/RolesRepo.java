@@ -1,4 +1,4 @@
-package com.vjabuilds.repos;
+package dev.vjabuilds.repos;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import com.vjabuilds.models.DatawavesUser;
-import com.vjabuilds.models.Role;
+import dev.vjabuilds.models.DatawavesUser;
+import dev.vjabuilds.models.Role;
 
 import io.quarkus.redis.datasource.ReactiveRedisDataSource;
 import io.smallrye.mutiny.Uni;
