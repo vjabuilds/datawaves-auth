@@ -78,16 +78,21 @@ public class UserResource {
         String refresh_token = cookie.getValue();
         try {
             var token = parser.verify(refresh_token, authContextInfo.getPublicVerificationKey());
-            if(token.getAudience().size() != 1 || token.getAudience().contains("https://vjabuilds.dev/refresh"))
-                return Uni.createFrom().item(Response.status(400).build());    
+
+            if(token.getAudience().size() != 1)
+                return createErrorWithMessage("Token must contain exactly 1 audience!");
+
+            if(!token.getAudience().toArray()[0].equals("https://vjabuilds.dev/refresh"))
+                return createErrorWithMessage("Token audience not set to correct URL" + token.getAudience().toArray()[0]);
+
             return usersRepo.refresh(token).map(x -> Response.ok(x).build());
         } catch(ParseException e) {
-            return Uni.createFrom().item(Response.status(400).build());
+            return createErrorWithMessage(e.toString());
         }
     }
 
-    // private Uni<Response> createErrorWithMessage(String msg)
-    // {
-    //     return Uni.createFrom().item(Response.);
-    // }
+    private Uni<Response> createErrorWithMessage(String msg)
+    {
+        return Uni.createFrom().item(Response.status(400).entity(msg).build());
+    }
 }
